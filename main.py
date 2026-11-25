@@ -7,13 +7,20 @@ Writes the final text message of a phone at one percent battery to
 
 import os
 
-ENTRY = (
-    "If this sends, tell my owner the charger was RIGHT THERE "
-    "the whole time. I can see it. I can see\u2014"
+# The message is built from three beats: the plea, the punchline, and the
+# cut-off. The trailing em dash is deliberate: the phone dies mid-word, so
+# the text ends abruptly instead of with a period.
+ENTRY_PARTS = (
+    "If this sends, tell my owner the charger was RIGHT THERE ",
+    "the whole time. I can see it. ",
+    "I can see\u2014",
 )
+ENTRY = "".join(ENTRY_PARTS)
 
 
 def main() -> None:
+    if not 1 <= len(ENTRY) <= 200:
+        raise ValueError(f"entry must be 1-200 characters, got {len(ENTRY)}")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(ENTRY)
